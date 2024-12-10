@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="mt-4">
+    <h1 class="mb-4">Welcome to Language Lever Meter</h1>
+    <form action="{{ url_for('add_message') }}" method="POST" class="mb-4">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" name="name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea id="message" name="message" class="form-control" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Message</button>
+    </form>
+    <h2>Messages</h2>
+    <ul class="list-group">
+        {% for name, message in messages %}
+        <li class="list-group-item">
+            <strong>{{ name }}</strong>: {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
