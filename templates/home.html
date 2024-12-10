@@ -4,25 +4,40 @@
 
 {% block content %}
 <div class="mt-4">
-    <h1 class="mb-4">Welcome to Language Lever Meter</h1>
+    <h1 class="mb-4">Measure Language Level</h1>
+    <p>To measure the language level of your document, insert the URL into the input field below and click "Send".</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="mb-4">
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
     <form action="{{ url_for('add_message') }}" method="POST" class="mb-4">
         <div class="mb-3">
-            <label for="name" class="form-label">Name</label>
-            <input type="text" id="name" name="name" class="form-control" required>
+            <label for="url" class="form-label">Document URL</label>
+            <input type="url" id="url" name="url" class="form-control" placeholder="Enter document URL here" required>
         </div>
-        <div class="mb-3">
-            <label for="message" class="form-label">Message</label>
-            <textarea id="message" name="message" class="form-control" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Add Message</button>
+        <button type="submit" class="btn btn-primary">Send</button>
     </form>
-    <h2>Messages</h2>
+
+    {% if urls %}
+    <h2>Submitted URLs</h2>
     <ul class="list-group">
-        {% for name, message in messages %}
+        {% for row in urls %}
         <li class="list-group-item">
-            <strong>{{ name }}</strong>: {{ message }}
+            <a href="{{ row[0] }}" target="_blank">{{ row[0] }}</a>
         </li>
         {% endfor %}
     </ul>
+    {% else %}
+    <p>No URLs have been submitted yet.</p>
+    {% endif %}
 </div>
 {% endblock %}
